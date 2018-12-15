@@ -33,7 +33,7 @@ class ThreadsTest extends TestCase
      */
     public function a_user_can_view_a_thread()
     {
-        $response = $this->get('threads/' . $this->thread->id);
+        $response = $this->get('threads/' . $this->thread->channel->id . '/' . $this->thread->id);
         $response->assertSee($this->thread->title);
     }
 
@@ -44,7 +44,7 @@ class ThreadsTest extends TestCase
     {
         $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
 
-        $response = $this->get('threads/' . $this->thread->id);
+        $response = $this->get('threads/' . $this->thread->channel->id . '/' . $this->thread->id);
         $response->assertSee($reply->body);
     }
 }

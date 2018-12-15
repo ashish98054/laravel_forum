@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Thread;
+use App\Channel;
 
 class ThreadTest extends TestCase
 {
@@ -16,6 +17,16 @@ class ThreadTest extends TestCase
         parent::setUp();
 
         $this->thread = factory('App\Thread')->create();
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_can_make_a_string_path()
+    {
+        $thread = factory('App\Thread')->create();
+
+        $this->assertEquals("threads/{$thread->channel->slug}/{$thread->id}", $thread->path());
     }
 
     /**
@@ -38,6 +49,9 @@ class ThreadTest extends TestCase
         $this->assertInstanceOf('App\User', $thread->creator);
     }
 
+    /**
+     * @test
+     */
     public function a_thread_can_add_a_reply()
     {
         $this->thread->addReply([
@@ -45,6 +59,16 @@ class ThreadTest extends TestCase
             'user_id' => 1
         ]);
 
-        $this->assertCount($this->threads->replies, 1);
+        $this->assertCount(1, $this->thread->replies);
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_belongs_to_a_channel()
+    {
+        $thread = factory('App\Thread')->create();
+
+        $this->assertInstanceOf(Channel::class, $thread->channel);
     }
 }

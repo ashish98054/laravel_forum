@@ -11,7 +11,7 @@
             </div>
 
             @if (auth()->check())
-            <form method="POST" action="{{ route('replies.store', $thread->id)}}" style="margin-bottom: 25px;">
+            <form method="POST" action="{{ route('replies.store', $thread->channel->id, $thread->id)}}" style="margin-bottom: 25px;">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <textarea name="body" id="body" class="form-control"></textarea>
